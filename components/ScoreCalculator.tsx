@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   Plus,
@@ -170,6 +170,26 @@ function BandSelector({
 export default function ScoreCalculator() {
   const [activeTab, setActiveTab] = useState<TabMode>("sat");
 
+  // Synchronize hash with active tab for deep linking, SEO, and social shares
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.replace("#", "").toLowerCase() as TabMode;
+      if (hash && ["sat", "ielts", "milliy", "cefr"].includes(hash)) {
+        setActiveTab(hash);
+      }
+    };
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, []);
+
+  const switchTab = (tab: TabMode) => {
+    setActiveTab(tab);
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", `#${tab}`);
+    }
+  };
+
   // SAT State
   const [satInputs, setSatInputs] = useState<SATInput>({
     rwModule1: 22,
@@ -274,71 +294,71 @@ export default function ScoreCalculator() {
 
       {/* ━━━ FIXED TOP APP HEADER ━━━ */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200/70">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2 sm:gap-3">
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-2">
           
           {/* Logo & Brand */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <Image
               src="/logo-icon.svg"
               alt="ScoreHigh"
-              width={26}
-              height={26}
+              width={24}
+              height={24}
               priority
-              className="w-6 h-6 sm:w-6.5 sm:h-6.5 object-contain shrink-0"
+              className="w-5.5 h-5.5 sm:w-6.5 sm:h-6.5 object-contain shrink-0"
             />
-            <span className="text-base font-bold tracking-tight text-gray-900">
+            <span className="text-sm sm:text-base font-bold tracking-tight text-gray-900">
               Score<span className="text-[#7C3AED]">High</span>
             </span>
           </div>
 
           {/* 4-Tab Selector: SAT / IELTS / Milliy / CEFR */}
-          <div className="flex items-center bg-gray-100 rounded-md p-0.5 border border-gray-200/50 overflow-x-auto no-scrollbar max-w-full">
+          <div className="flex items-center bg-gray-100 rounded-lg p-0.5 border border-gray-200/50 shrink-0">
             <button
               type="button"
-              onClick={() => setActiveTab("sat")}
-              className={`px-2.5 sm:px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-all flex items-center gap-1.5 shrink-0 ${
+              onClick={() => switchTab("sat")}
+              className={`px-2 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-md cursor-pointer transition-all flex items-center gap-1 sm:gap-1.5 shrink-0 ${
                 activeTab === "sat"
                   ? "bg-white text-gray-900 shadow-2xs font-bold"
                   : "text-gray-500 hover:text-gray-800"
               }`}
             >
-              {activeTab === "sat" && <BookOpen className="w-3.5 h-3.5 text-[#7C3AED] shrink-0" />}
+              {activeTab === "sat" && <BookOpen className="w-3.5 h-3.5 text-[#7C3AED] shrink-0 hidden sm:inline-block" />}
               <span>SAT</span>
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab("ielts")}
-              className={`px-2.5 sm:px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-all flex items-center gap-1.5 shrink-0 ${
+              onClick={() => switchTab("ielts")}
+              className={`px-2 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-md cursor-pointer transition-all flex items-center gap-1 sm:gap-1.5 shrink-0 ${
                 activeTab === "ielts"
                   ? "bg-white text-gray-900 shadow-2xs font-bold"
                   : "text-gray-500 hover:text-gray-800"
               }`}
             >
-              {activeTab === "ielts" && <Award className="w-3.5 h-3.5 text-[#7C3AED] shrink-0" />}
+              {activeTab === "ielts" && <Award className="w-3.5 h-3.5 text-[#7C3AED] shrink-0 hidden sm:inline-block" />}
               <span>IELTS</span>
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab("milliy")}
-              className={`px-2.5 sm:px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-all flex items-center gap-1.5 shrink-0 ${
+              onClick={() => switchTab("milliy")}
+              className={`px-2 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-md cursor-pointer transition-all flex items-center gap-1 sm:gap-1.5 shrink-0 ${
                 activeTab === "milliy"
                   ? "bg-white text-gray-900 shadow-2xs font-bold"
                   : "text-gray-500 hover:text-gray-800"
               }`}
             >
-              {activeTab === "milliy" && <GraduationCap className="w-3.5 h-3.5 text-[#7C3AED] shrink-0" />}
+              {activeTab === "milliy" && <GraduationCap className="w-3.5 h-3.5 text-[#7C3AED] shrink-0 hidden sm:inline-block" />}
               <span>Milliy</span>
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab("cefr")}
-              className={`px-2.5 sm:px-3 py-1 text-xs font-semibold rounded cursor-pointer transition-all flex items-center gap-1.5 shrink-0 ${
+              onClick={() => switchTab("cefr")}
+              className={`px-2 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-md cursor-pointer transition-all flex items-center gap-1 sm:gap-1.5 shrink-0 ${
                 activeTab === "cefr"
                   ? "bg-white text-gray-900 shadow-2xs font-bold"
                   : "text-gray-500 hover:text-gray-800"
               }`}
             >
-              {activeTab === "cefr" && <Languages className="w-3.5 h-3.5 text-[#7C3AED] shrink-0" />}
+              {activeTab === "cefr" && <Languages className="w-3.5 h-3.5 text-[#7C3AED] shrink-0 hidden sm:inline-block" />}
               <span>CEFR</span>
             </button>
           </div>
@@ -346,13 +366,16 @@ export default function ScoreCalculator() {
       </header>
 
       {/* ━━━ MAIN CONTAINER ━━━ */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-5 sm:py-7">
+      <main className="max-w-5xl mx-auto px-3 sm:px-6 py-4 sm:py-7">
+        <h1 className="sr-only">
+          ScoreHigh — Digital SAT, IELTS, Milliy Sertifikat va UzBMBA CEFR Multi-level Test Ballari Kalkulyatori
+        </h1>
 
         {/* ════════════════════════════════════════════════════════════ */}
         {/* SAT TAB VIEW                                                */}
         {/* ════════════════════════════════════════════════════════════ */}
         {activeTab === "sat" && (
-          <div className="animate-fade-in space-y-6">
+          <section id="sat" aria-label="Digital SAT Ball Kalkulyatori" className="animate-fade-in space-y-6">
 
             {/* UNIFIED HERO SCORE STRIP (Complete Score has Higher Intensity) */}
             <div className="border border-gray-200/80 rounded-lg p-4 sm:p-5 bg-gray-50/50">
@@ -530,14 +553,14 @@ export default function ScoreCalculator() {
                 </div>
               </section>
             </div>
-          </div>
+          </section>
         )}
 
         {/* ════════════════════════════════════════════════════════════ */}
         {/* IELTS TAB VIEW                                               */}
         {/* ════════════════════════════════════════════════════════════ */}
         {activeTab === "ielts" && (
-          <div className="animate-fade-in space-y-6">
+          <section id="ielts" aria-label="IELTS Band Score Kalkulyatori" className="animate-fade-in space-y-6">
 
             {/* UNIFIED HERO SCORE STRIP (Complete Score has Higher Intensity) */}
             <div className="border border-gray-200/80 rounded-lg p-4 sm:p-5 bg-gray-50/50">
@@ -791,14 +814,14 @@ export default function ScoreCalculator() {
                 </div>
               </section>
             </div>
-          </div>
+          </section>
         )}
 
         {/* ════════════════════════════════════════════════════════════ */}
         {/* MILLIY SERTIFIKAT TAB VIEW                                  */}
         {/* ════════════════════════════════════════════════════════════ */}
         {activeTab === "milliy" && (
-          <div className="animate-fade-in space-y-6">
+          <section id="milliy" aria-label="Milliy Sertifikat Ball Kalkulyatori" className="animate-fade-in space-y-6">
 
             {/* 1. SUBJECT SELECTOR CHIPS */}
             <div className="space-y-2">
@@ -1148,35 +1171,35 @@ export default function ScoreCalculator() {
               </div>
             </section>
 
-          </div>
+          </section>
         )}
 
         {/* ════════════════════════════════════════════════════════════ */}
         {/* CEFR / MULTI-LEVEL (UZBEKISTAN) TAB VIEW                     */}
         {/* ════════════════════════════════════════════════════════════ */}
         {activeTab === "cefr" && (
-          <div className="animate-fade-in space-y-6">
+          <section id="cefr" aria-label="UzBMBA CEFR Multi-level Ball Kalkulyatori" className="animate-fade-in space-y-6">
 
             {/* 1. UNIFIED HERO SCORE STRIP */}
-            <div className="border border-gray-200/80 rounded-lg p-3.5 sm:p-5 bg-gray-50/50">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-5">
+            <div className="border border-gray-200/80 rounded-lg p-3 sm:p-5 bg-gray-50/50 space-y-3 md:space-y-0">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-5">
                 
                 {/* HERO Complete Awarded CEFR Level */}
-                <div className="flex items-center justify-between md:justify-start gap-4 sm:gap-6 pr-0 md:pr-8 md:border-r md:border-gray-200/80 shrink-0">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[11px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <div className="flex items-center justify-between md:justify-start gap-3 sm:gap-6 pr-0 md:pr-8 md:border-r md:border-gray-200/80 shrink-0">
+                  <div className="space-y-0.5 sm:space-y-1 min-w-0">
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                      <span className="text-[10px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
                         CEFR Darajasi
                       </span>
                       <span className={`text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded border ${cefrResult.levelInfo.bgLightClass}`}>
                         {cefrResult.levelInfo.title}
                       </span>
                     </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className={`text-4xl sm:text-5xl font-black tracking-tight leading-none ${cefrResult.levelInfo.colorClass}`}>
+                    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                      <span className={`text-3xl sm:text-5xl font-black tracking-tight leading-none ${cefrResult.levelInfo.colorClass}`}>
                         {cefrResult.levelInfo.level === "Fail" ? "B1 dan quyi" : `${cefrResult.levelInfo.level} Daraja`}
                       </span>
-                      <span className="text-xs sm:text-base font-semibold text-gray-400">
+                      <span className="text-xs sm:text-sm font-semibold text-gray-400">
                         {cefrResult.levelInfo.passed ? "Sertifikat beriladi" : "Sertifikat berilmaydi"}
                       </span>
                     </div>
@@ -1186,23 +1209,23 @@ export default function ScoreCalculator() {
                   <button
                     type="button"
                     onClick={resetCEFR}
-                    className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-200/60 transition-colors cursor-pointer"
+                    className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-200/60 transition-colors cursor-pointer shrink-0"
                     title="Reset to defaults"
                   >
                     <RotateCcw className="w-4 h-4" />
                   </button>
                 </div>
 
-                {/* Subscores / Standardized Metrics Strip */}
-                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-4 flex-1 items-center">
+                {/* Subscores / Standardized Metrics Strip (Mobile: 2-col clean card grid, Desktop: 5-col strip) */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4 flex-1 items-stretch">
                   
                   {/* Overall Average Score */}
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] sm:text-xs font-medium text-gray-500 block truncate">
+                  <div className="col-span-2 sm:col-span-1 bg-white sm:bg-transparent p-2.5 sm:p-0 rounded-md border sm:border-0 border-purple-100 flex sm:block items-center justify-between">
+                    <span className="text-[11px] sm:text-xs font-semibold text-gray-600 block">
                       Umumiy Ball
                     </span>
-                    <div className="flex items-baseline gap-0.5 sm:gap-1">
-                      <span className="text-lg sm:text-2xl font-bold text-gray-900">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-xl sm:text-2xl font-black text-gray-950">
                         {cefrResult.overallScore.toFixed(1)}
                       </span>
                       <span className="text-[10px] sm:text-xs text-gray-400 font-medium">/ 75</span>
@@ -1210,54 +1233,60 @@ export default function ScoreCalculator() {
                   </div>
 
                   {/* Listening */}
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] sm:text-xs font-medium text-gray-500 block truncate">
-                      Listening
-                    </span>
-                    <div className="text-sm sm:text-xl font-bold text-gray-800">
-                      {cefrResult.listeningScore}
+                  <div className="bg-white sm:bg-transparent p-2 sm:p-0 rounded-md border sm:border-0 border-gray-200/60 space-y-0.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] sm:text-xs font-medium text-gray-500">Listening</span>
                       {cefrMode === "raw" && (
-                        <span className="text-[10px] sm:text-xs text-gray-400 font-normal ml-1">
-                          ({cefrListeningRaw}/35)
+                        <span className="text-[10px] text-purple-600 font-semibold sm:hidden">
+                          {cefrListeningRaw}/35
                         </span>
                       )}
+                    </div>
+                    <div className="text-base sm:text-xl font-bold text-gray-900 flex items-baseline gap-1">
+                      <span>{cefrResult.listeningScore}</span>
+                      <span className="text-[10px] sm:text-xs text-gray-400 font-normal hidden sm:inline">
+                        {cefrMode === "raw" ? `(${cefrListeningRaw}/35)` : "/ 75"}
+                      </span>
                     </div>
                   </div>
 
                   {/* Reading */}
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] sm:text-xs font-medium text-gray-500 block truncate">
-                      Reading
-                    </span>
-                    <div className="text-sm sm:text-xl font-bold text-gray-800">
-                      {cefrResult.readingScore}
+                  <div className="bg-white sm:bg-transparent p-2 sm:p-0 rounded-md border sm:border-0 border-gray-200/60 space-y-0.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] sm:text-xs font-medium text-gray-500">Reading</span>
                       {cefrMode === "raw" && (
-                        <span className="text-[10px] sm:text-xs text-gray-400 font-normal ml-1">
-                          ({cefrReadingRaw}/35)
+                        <span className="text-[10px] text-purple-600 font-semibold sm:hidden">
+                          {cefrReadingRaw}/35
                         </span>
                       )}
+                    </div>
+                    <div className="text-base sm:text-xl font-bold text-gray-900 flex items-baseline gap-1">
+                      <span>{cefrResult.readingScore}</span>
+                      <span className="text-[10px] sm:text-xs text-gray-400 font-normal hidden sm:inline">
+                        {cefrMode === "raw" ? `(${cefrReadingRaw}/35)` : "/ 75"}
+                      </span>
                     </div>
                   </div>
 
                   {/* Writing (Coming soon) */}
-                  <div className="space-y-0.5 opacity-60">
+                  <div className="bg-white/60 sm:bg-transparent p-2 sm:p-0 rounded-md border sm:border-0 border-dashed border-gray-200 space-y-0.5 opacity-70">
                     <span className="text-[10px] sm:text-xs font-medium text-gray-500 block truncate">
                       Writing
                     </span>
-                    <div className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600">
-                      <Lock className="w-3 h-3 text-amber-500" />
+                    <div className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold text-amber-700">
+                      <Lock className="w-3 h-3 text-amber-500 shrink-0" />
                       <span>Tez kunda</span>
                     </div>
                   </div>
 
                   {/* Speaking (Coming soon) + Desktop Reset */}
-                  <div className="flex items-center justify-between gap-1 sm:gap-2">
-                    <div className="space-y-0.5 opacity-60">
+                  <div className="bg-white/60 sm:bg-transparent p-2 sm:p-0 rounded-md border sm:border-0 border-dashed border-gray-200 flex items-center justify-between gap-1 opacity-70">
+                    <div className="space-y-0.5">
                       <span className="text-[10px] sm:text-xs font-medium text-gray-500 block truncate">
                         Speaking
                       </span>
-                      <div className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600">
-                        <Lock className="w-3 h-3 text-amber-500" />
+                      <div className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold text-amber-700">
+                        <Lock className="w-3 h-3 text-amber-500 shrink-0" />
                         <span>Tez kunda</span>
                       </div>
                     </div>
@@ -1284,45 +1313,47 @@ export default function ScoreCalculator() {
             </div>
 
             {/* Mode Switcher Banner */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-white border border-gray-200/80 rounded-lg">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 p-3 sm:p-3.5 bg-white border border-gray-200/80 rounded-lg">
               <div className="min-w-0">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                   <h3 className="text-xs sm:text-sm font-semibold text-gray-900">
-                    Baholash Rejimi (Tinglab tushunish va O'qib tushunish)
+                    Baholash Rejimi
                   </h3>
                   <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-purple-50 text-[#7C3AED] border border-purple-200">
                     UzBMBA Rasch
                   </span>
                 </div>
-                <p className="text-[11px] text-gray-500">
+                <p className="text-[10px] sm:text-[11px] text-gray-500 mt-0.5">
                   {cefrMode === "raw"
-                    ? "Testda to'plangan to'g'ri javoblar soni (0–35 ta) asosida 75 ballik shkalaga hisoblash"
+                    ? "To'g'ri javoblar (0–35 ta) bo'yicha 75 ballik standart shkalaga hisoblash"
                     : "Standartlashtirilgan Rasch bali (0–75 ball) asosida darajani aniqlash"}
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 sm:flex sm:items-center border border-gray-200 rounded-md overflow-hidden text-xs w-full sm:w-auto text-center shrink-0">
+              <div className="grid grid-cols-2 p-0.5 bg-gray-100 rounded-md border border-gray-200/70 text-xs w-full sm:w-auto shrink-0">
                 <button
                   type="button"
                   onClick={() => setCefrMode("raw")}
-                  className={`px-3 py-1.5 font-semibold cursor-pointer transition-colors ${
+                  className={`px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-semibold rounded cursor-pointer transition-colors text-center ${
                     cefrMode === "raw"
-                      ? "bg-[#7C3AED] text-white"
-                      : "text-gray-500 hover:text-gray-800 bg-white"
+                      ? "bg-[#7C3AED] text-white shadow-2xs font-bold"
+                      : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  To'g'ri javoblar (0–35)
+                  <span className="sm:hidden">To'g'ri javoblar</span>
+                  <span className="hidden sm:inline">To'g'ri javoblar (0–35)</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setCefrMode("scale")}
-                  className={`px-3 py-1.5 font-semibold cursor-pointer transition-colors ${
+                  className={`px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-semibold rounded cursor-pointer transition-colors text-center ${
                     cefrMode === "scale"
-                      ? "bg-[#7C3AED] text-white"
-                      : "text-gray-500 hover:text-gray-800 bg-white"
+                      ? "bg-[#7C3AED] text-white shadow-2xs font-bold"
+                      : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  Standart ball (0–75)
+                  <span className="sm:hidden">Standart ball</span>
+                  <span className="hidden sm:inline">Standart ball (0–75)</span>
                 </button>
               </div>
             </div>
@@ -1331,21 +1362,21 @@ export default function ScoreCalculator() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               
               {/* 1. Listening (Active) */}
-              <section className="border border-gray-200/80 rounded-lg p-3.5 sm:p-5 bg-white space-y-4 shadow-2xs">
-                <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <Headphones className="w-4 h-4 text-[#7C3AED]" />
-                    <div>
-                      <h2 className="text-sm font-semibold text-gray-900">Listening Section</h2>
-                      <p className="text-[11px] text-gray-400">Tinglab tushunish (Maksimal 35 ta topshiriq)</p>
+              <section className="border border-gray-200/80 rounded-lg p-3 sm:p-5 bg-white space-y-4 shadow-2xs">
+                <div className="flex items-center justify-between pb-3 border-b border-gray-100 gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Headphones className="w-4 h-4 text-[#7C3AED] shrink-0" />
+                    <div className="min-w-0">
+                      <h2 className="text-xs sm:text-sm font-semibold text-gray-900 truncate">Listening Section</h2>
+                      <p className="text-[10px] sm:text-[11px] text-gray-400 truncate">Tinglab tushunish (Maksimal 35 ta topshiriq)</p>
                     </div>
                   </div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-xs text-gray-400">Ball:</span>
+                  <div className="flex items-baseline gap-1 shrink-0">
+                    <span className="text-[11px] sm:text-xs text-gray-400">Ball:</span>
                     <span className="text-base sm:text-lg font-bold text-[#7C3AED]">
                       {cefrResult.listeningScore}
                     </span>
-                    <span className="text-xs text-gray-400">/ 75</span>
+                    <span className="text-[11px] sm:text-xs text-gray-400">/ 75</span>
                   </div>
                 </div>
 
@@ -1362,9 +1393,9 @@ export default function ScoreCalculator() {
                         onChange={(v) => setCefrListeningRaw(v)}
                         sliderBg={getSliderBg(cefrListeningRaw, 35)}
                       />
-                      <div className="text-xs text-gray-600 bg-purple-50/50 p-2.5 rounded-md border border-purple-100/70 flex items-center justify-between">
-                        <span>75 ballik ekvivalent:</span>
-                        <span className="font-bold text-[#7C3AED]">
+                      <div className="text-xs text-gray-600 bg-purple-50/50 p-2 sm:p-2.5 rounded-md border border-purple-100/70 flex flex-wrap sm:flex-nowrap items-center justify-between gap-1">
+                        <span className="text-[11px] sm:text-xs text-gray-500">75 ballik ekvivalent:</span>
+                        <span className="font-bold text-[#7C3AED] text-[11px] sm:text-xs">
                           {cefrResult.listeningScore} ball ({cefrResult.listeningScore >= 65 ? "C1" : cefrResult.listeningScore >= 51 ? "B2" : cefrResult.listeningScore >= 38 ? "B1" : "B1 dan quyi"})
                         </span>
                       </div>
@@ -1385,21 +1416,21 @@ export default function ScoreCalculator() {
               </section>
 
               {/* 2. Reading (Active) */}
-              <section className="border border-gray-200/80 rounded-lg p-3.5 sm:p-5 bg-white space-y-4 shadow-2xs">
-                <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <BookOpen className="w-4 h-4 text-[#7C3AED]" />
-                    <div>
-                      <h2 className="text-sm font-semibold text-gray-900">Reading Section</h2>
-                      <p className="text-[11px] text-gray-400">O'qib tushunish (Maksimal 35 ta topshiriq)</p>
+              <section className="border border-gray-200/80 rounded-lg p-3 sm:p-5 bg-white space-y-4 shadow-2xs">
+                <div className="flex items-center justify-between pb-3 border-b border-gray-100 gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <BookOpen className="w-4 h-4 text-[#7C3AED] shrink-0" />
+                    <div className="min-w-0">
+                      <h2 className="text-xs sm:text-sm font-semibold text-gray-900 truncate">Reading Section</h2>
+                      <p className="text-[10px] sm:text-[11px] text-gray-400 truncate">O'qib tushunish (Maksimal 35 ta topshiriq)</p>
                     </div>
                   </div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-xs text-gray-400">Ball:</span>
+                  <div className="flex items-baseline gap-1 shrink-0">
+                    <span className="text-[11px] sm:text-xs text-gray-400">Ball:</span>
                     <span className="text-base sm:text-lg font-bold text-[#7C3AED]">
                       {cefrResult.readingScore}
                     </span>
-                    <span className="text-xs text-gray-400">/ 75</span>
+                    <span className="text-[11px] sm:text-xs text-gray-400">/ 75</span>
                   </div>
                 </div>
 
@@ -1416,9 +1447,9 @@ export default function ScoreCalculator() {
                         onChange={(v) => setCefrReadingRaw(v)}
                         sliderBg={getSliderBg(cefrReadingRaw, 35)}
                       />
-                      <div className="text-xs text-gray-600 bg-purple-50/50 p-2.5 rounded-md border border-purple-100/70 flex items-center justify-between">
-                        <span>75 ballik ekvivalent:</span>
-                        <span className="font-bold text-[#7C3AED]">
+                      <div className="text-xs text-gray-600 bg-purple-50/50 p-2 sm:p-2.5 rounded-md border border-purple-100/70 flex flex-wrap sm:flex-nowrap items-center justify-between gap-1">
+                        <span className="text-[11px] sm:text-xs text-gray-500">75 ballik ekvivalent:</span>
+                        <span className="font-bold text-[#7C3AED] text-[11px] sm:text-xs">
                           {cefrResult.readingScore} ball ({cefrResult.readingScore >= 65 ? "C1" : cefrResult.readingScore >= 51 ? "B2" : cefrResult.readingScore >= 38 ? "B1" : "B1 dan quyi"})
                         </span>
                       </div>
@@ -1439,54 +1470,54 @@ export default function ScoreCalculator() {
               </section>
 
               {/* 3. Writing (Disabled - Coming Soon) */}
-              <section className="border border-dashed border-gray-300 rounded-lg p-3.5 sm:p-5 bg-gray-50/70 space-y-3 relative overflow-hidden select-none">
-                <div className="flex items-center justify-between pb-3 border-b border-gray-200/80">
-                  <div className="flex items-center gap-2">
-                    <PenLine className="w-4 h-4 text-gray-400" />
-                    <div>
-                      <h2 className="text-sm font-semibold text-gray-700">Writing Section (Yozma ish)</h2>
-                      <p className="text-[11px] text-gray-400">1 va 2-topshiriqlar · 36 ballik ekspert rubrikasi</p>
+              <section className="border border-dashed border-gray-300 rounded-lg p-3 sm:p-5 bg-gray-50/70 space-y-3 relative overflow-hidden select-none">
+                <div className="flex items-center justify-between pb-3 border-b border-gray-200/80 gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <PenLine className="w-4 h-4 text-gray-400 shrink-0" />
+                    <div className="min-w-0">
+                      <h2 className="text-xs sm:text-sm font-semibold text-gray-700 truncate">Writing Section (Yozma ish)</h2>
+                      <p className="text-[10px] sm:text-[11px] text-gray-400 truncate">1 va 2-topshiriqlar · 36 ballik ekspert rubrikasi</p>
                     </div>
                   </div>
-                  <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200/80 shrink-0">
+                  <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200/80 shrink-0">
                     <Lock className="w-3 h-3 text-amber-600" />
                     <span>Tez kunda</span>
                   </span>
                 </div>
 
-                <div className="p-3 bg-white/90 rounded-md border border-gray-200/70 text-xs text-gray-600 space-y-1.5">
+                <div className="p-2.5 sm:p-3 bg-white/90 rounded-md border border-gray-200/70 text-xs text-gray-600 space-y-1.5">
                   <div className="font-semibold text-gray-800 flex items-center gap-1.5">
                     <Info className="w-3.5 h-3.5 text-gray-500 shrink-0" />
-                    <span>UzBMBA baholash mezonlari:</span>
+                    <span className="text-[11px] sm:text-xs">UzBMBA baholash mezonlari:</span>
                   </div>
-                  <p className="text-[11px] text-gray-500 leading-relaxed">
+                  <p className="text-[10px] sm:text-[11px] text-gray-500 leading-relaxed">
                     Yozma ish 1-topshiriq (33% / 12 ball) va 2-topshiriq (67% / 24 ball) bo'yicha baholanadi. Ekspert baholarining o'rtachasi 75 ballik shkalaga o'giriladi. Tez kunda ishga tushiriladi.
                   </p>
                 </div>
               </section>
 
               {/* 4. Speaking (Disabled - Coming Soon) */}
-              <section className="border border-dashed border-gray-300 rounded-lg p-3.5 sm:p-5 bg-gray-50/70 space-y-3 relative overflow-hidden select-none">
-                <div className="flex items-center justify-between pb-3 border-b border-gray-200/80">
-                  <div className="flex items-center gap-2">
-                    <Mic className="w-4 h-4 text-gray-400" />
-                    <div>
-                      <h2 className="text-sm font-semibold text-gray-700">Speaking Section (Og'zaki nutq)</h2>
-                      <p className="text-[11px] text-gray-400">Topshiriqlarning 3 turi · 36 ballik ekspert rubrikasi</p>
+              <section className="border border-dashed border-gray-300 rounded-lg p-3 sm:p-5 bg-gray-50/70 space-y-3 relative overflow-hidden select-none">
+                <div className="flex items-center justify-between pb-3 border-b border-gray-200/80 gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Mic className="w-4 h-4 text-gray-400 shrink-0" />
+                    <div className="min-w-0">
+                      <h2 className="text-xs sm:text-sm font-semibold text-gray-700 truncate">Speaking Section (Og'zaki nutq)</h2>
+                      <p className="text-[10px] sm:text-[11px] text-gray-400 truncate">Topshiriqlarning 3 turi · 36 ballik ekspert rubrikasi</p>
                     </div>
                   </div>
-                  <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200/80 shrink-0">
+                  <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200/80 shrink-0">
                     <Lock className="w-3 h-3 text-amber-600" />
                     <span>Tez kunda</span>
                   </span>
                 </div>
 
-                <div className="p-3 bg-white/90 rounded-md border border-gray-200/70 text-xs text-gray-600 space-y-1.5">
+                <div className="p-2.5 sm:p-3 bg-white/90 rounded-md border border-gray-200/70 text-xs text-gray-600 space-y-1.5">
                   <div className="font-semibold text-gray-800 flex items-center gap-1.5">
                     <Info className="w-3.5 h-3.5 text-gray-500 shrink-0" />
-                    <span>UzBMBA baholash mezonlari:</span>
+                    <span className="text-[11px] sm:text-xs">UzBMBA baholash mezonlari:</span>
                   </div>
-                  <p className="text-[11px] text-gray-500 leading-relaxed">
+                  <p className="text-[10px] sm:text-[11px] text-gray-500 leading-relaxed">
                     Og'zaki nutq topshiriqlarining 3 turi bo'yicha ekspertlar umumlashtirilgan baho qo'yadi va rasmiy 75 ballik shkalaga aylantiriladi. Tez kunda ishga tushiriladi.
                   </p>
                 </div>
@@ -1495,15 +1526,15 @@ export default function ScoreCalculator() {
             </div>
 
             {/* 3. OFFICIAL CEFR REFERENCE & PERFORMANCE SUMMARY */}
-            <section className="border border-gray-200/80 rounded-lg p-3.5 sm:p-5 bg-white space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-                <div className="flex items-center gap-2">
+            <section className="border border-gray-200/80 rounded-lg p-3 sm:p-5 bg-white space-y-3 sm:space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-gray-100 gap-2">
+                <div className="flex items-center gap-2 min-w-0">
                   <Award className="w-4 h-4 text-[#7C3AED] shrink-0" />
-                  <h3 className="text-xs sm:text-sm font-semibold text-gray-900">
-                    Rasmiy CEFR / Multi-level Shkalasi va Chegaralar (UzBMBA)
+                  <h3 className="text-xs sm:text-sm font-semibold text-gray-900 truncate">
+                    Rasmiy CEFR / Multi-level Shkalasi va Chegaralar
                   </h3>
                 </div>
-                <span className="text-[11px] text-gray-400">0 – 75 standart shkala</span>
+                <span className="text-[10px] sm:text-[11px] text-gray-400 shrink-0">0 – 75 shkala</span>
               </div>
 
               {/* 4 CEFR Tiers Grid */}
@@ -1514,22 +1545,22 @@ export default function ScoreCalculator() {
                   return (
                     <div
                       key={levelKey}
-                      className={`p-2.5 sm:p-3 rounded-md border text-center transition-all ${
+                      className={`p-2 sm:p-3 rounded-md border text-center transition-all ${
                         isCurrent
                           ? "border-[#7C3AED] bg-purple-50/70 shadow-2xs font-semibold ring-1 ring-[#7C3AED]/20"
                           : "border-gray-200/70 bg-gray-50/50 text-gray-600"
                       }`}
                     >
-                      <div className={`text-base sm:text-lg font-black ${isCurrent ? "text-[#7C3AED]" : "text-gray-800"}`}>
+                      <div className={`text-sm sm:text-base font-black ${isCurrent ? "text-[#7C3AED]" : "text-gray-800"}`}>
                         {levelKey === "Fail" ? "B1 dan quyi" : `${levelKey} Daraja`}
                       </div>
-                      <div className="text-[11px] font-bold text-gray-600 mt-0.5">
+                      <div className="text-[10px] sm:text-[11px] font-bold text-gray-700 mt-0.5">
                         {t.minScore} – {t.maxScore} ball
                       </div>
-                      <div className="text-[10px] text-gray-400 mt-0.5 font-medium">
-                        {t.rawQuestionsRange} ta to'g'ri javob
+                      <div className="text-[9px] sm:text-[10px] text-gray-500 mt-0.5 font-medium">
+                        {t.rawQuestionsRange} ta to'g'ri
                       </div>
-                      <div className="text-[10px] text-gray-400 mt-0.5 truncate">
+                      <div className="text-[9px] sm:text-[10px] text-gray-400 mt-0.5 truncate">
                         {t.title}
                       </div>
                     </div>
@@ -1539,18 +1570,18 @@ export default function ScoreCalculator() {
 
               {/* Description of Current Result & Official Note */}
               <div className="space-y-2">
-                <div className="p-3 bg-purple-50/50 border border-purple-100 rounded-md text-xs text-purple-900 space-y-1">
+                <div className="p-2.5 sm:p-3 bg-purple-50/50 border border-purple-100 rounded-md text-xs text-purple-900 space-y-1">
                   <div className="font-semibold flex items-center gap-1.5 flex-wrap">
                     <span className="w-2 h-2 rounded-full bg-[#7C3AED] shrink-0" />
                     <span>Multi-level imtihoni baholash natijasi:</span>
                     <span className="font-bold underline">{cefrResult.levelInfo.title}</span>
                   </div>
-                  <p className="text-[11px] text-purple-800/80 leading-relaxed">
+                  <p className="text-[10px] sm:text-[11px] text-purple-800/80 leading-relaxed">
                     {cefrResult.levelInfo.description}
                   </p>
                 </div>
 
-                <div className="p-3 bg-gray-50 border border-gray-200/70 rounded-md text-[11px] text-gray-500 leading-relaxed space-y-1">
+                <div className="p-2.5 sm:p-3 bg-gray-50 border border-gray-200/70 rounded-md text-[10px] sm:text-[11px] text-gray-500 leading-relaxed space-y-1">
                   <p className="font-medium text-gray-700">
                     ℹ️ UzBMBA rasmiy qoidasi bo'yicha:
                   </p>
@@ -1561,19 +1592,27 @@ export default function ScoreCalculator() {
               </div>
             </section>
 
-          </div>
+          </section>
         )}
 
       </main>
 
       {/* ━━━ FOOTER ━━━ */}
       <footer className="max-w-5xl mx-auto px-4 sm:px-6 py-6 mt-8 border-t border-gray-100">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-400">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
           <div className="flex items-center gap-2">
             <Image src="/logo-icon.svg" alt="ScoreHigh" width={16} height={16} className="object-contain opacity-50" />
             <span>ScoreHigh — Standardized Testing Calculator</span>
           </div>
-          <span>Digital SAT Adaptive IRT · IELTS 4-Skill · UzBMBA Milliy Sertifikat</span>
+          <nav aria-label="Kalkulyator bo'limlari" className="flex items-center gap-3 text-xs text-gray-500 flex-wrap justify-center">
+            <a href="#sat" onClick={(e) => { e.preventDefault(); switchTab("sat"); }} className="hover:text-[#7C3AED] transition-colors">SAT Kalkulyator</a>
+            <span>·</span>
+            <a href="#ielts" onClick={(e) => { e.preventDefault(); switchTab("ielts"); }} className="hover:text-[#7C3AED] transition-colors">IELTS Kalkulyator</a>
+            <span>·</span>
+            <a href="#milliy" onClick={(e) => { e.preventDefault(); switchTab("milliy"); }} className="hover:text-[#7C3AED] transition-colors">Milliy Sertifikat</a>
+            <span>·</span>
+            <a href="#cefr" onClick={(e) => { e.preventDefault(); switchTab("cefr"); }} className="hover:text-[#7C3AED] transition-colors">CEFR Multi-level</a>
+          </nav>
         </div>
       </footer>
     </div>
