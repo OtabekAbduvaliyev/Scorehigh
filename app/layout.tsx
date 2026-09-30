@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://scorehigh.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://scorehigh.uz";
 
 export const viewport: Viewport = {
   themeColor: "#7C3AED",
