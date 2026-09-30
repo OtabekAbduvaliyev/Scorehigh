@@ -14,7 +14,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "ScoreHigh — SAT & IELTS Score Calculator",
-  description: "Official Digital SAT & IELTS score estimation with real-time conversion and AI writing evaluation.",
+  description: "Official Digital SAT & IELTS score estimation with real-time conversion.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

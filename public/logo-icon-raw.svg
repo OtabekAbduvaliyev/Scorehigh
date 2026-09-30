@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%" fill="none">
+  <!-- DEEP PURPLE: #5624C4, LIGHT PURPLE: #9D85F2, WHITE: #FFFFFF -->
+  <g id="scorehigh-icon">
+    <!-- 1. GRADUATION CAP / MORTARBOARD -->
+    <path 
+      d="M255 125 L372 186 L224 235 L131 186 Z" 
+      fill="#5624C4" 
+    />
+
+    <!-- TASSEL -->
+    <!-- Tassel String -->
+    <rect x="350" y="193" width="7" height="52" fill="#5624C4" rx="3.5" />
+    <!-- Tassel Hang Weight -->
+    <rect x="342" y="247" width="23" height="38" rx="7" fill="#5624C4" />
+
+    <!-- 2. THREE CHART BARS (Lighter Violet) -->
+    <!-- Bar 1 (Left, Short) -->
+    <path 
+      d="M196 314 Q196 312 201 308 L224 290 Q228 287 228 292 L228 370 Q228 374 224 374 L208 374 Q196 374 196 362 Z" 
+      fill="#9D85F2" 
+    />
+    <!-- Bar 2 (Middle, Medium) -->
+    <path 
+      d="M239 279 Q239 276 244 272 L266 254 Q270 251 270 256 L270 374 Q270 374 266 374 L243 374 Q239 374 239 370 Z" 
+      fill="#9D85F2" 
+    />
+    <!-- Bar 3 (Right, Tall) -->
+    <path 
+      d="M281 243 Q281 241 285 237 L308 217 Q312 214 312 219 L312 356 Q312 368 300 368 L285 368 Q281 368 281 364 Z" 
+      fill="#9D85F2" 
+    />
+
+    <!-- 3. SWOOPING RISING ARROW (Deep Purple) WITH WHITE CONTOUR CUTOUT -->
+    <!-- Outer White Contour Mask to provide clean negative space around arrow -->
+    <path 
+      d="M168 373 C165 330 188 285 240 236 L269 208 L269 188 L328 245 L307 245 L292 260 C246 302 213 336 182 373 Z" 
+      fill="none"
+    />
+    
+    <!-- Rising Arrow Body and Head -->
+    <path 
+      d="M168 374 C167 325 195 277 252 227 L268 213 L268 190 L322 248 L301 248 L286 261 C234 308 206 343 182 374 Z" 
+      fill="#5624C4"
+    />
+  </g>
+</svg>

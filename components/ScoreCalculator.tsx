@@ -13,7 +13,6 @@ import {
   Award,
   Sparkles,
   TrendingUp,
-  GraduationCap,
   ChevronDown,
 } from "lucide-react";
 import { calculateSAT, SATInput } from "@/lib/sat-scoring";
@@ -93,16 +92,18 @@ export default function ScoreCalculator() {
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Brand Identity */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-md bg-[#7C3AED] text-white flex items-center justify-center shadow-xs shrink-0">
-              <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <img
+              src="/logo-icon.svg"
+              alt="ScoreHigh Logo"
+              className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0 drop-shadow-2xs"
+            />
             <div>
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="text-base sm:text-lg font-black tracking-tight text-slate-900">
-                  ScoreHigh
+                <span className="text-base sm:text-lg font-black tracking-tight text-[#5522C2]">
+                  Score<span className="text-[#9D84F3]">High</span>
                 </span>
-                <span className="hidden xs:inline-block text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-50 text-[#7C3AED] border border-purple-200">
+                <span className="hidden xs:inline-block text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-50 text-[#5522C2] border border-purple-200">
                   2026
                 </span>
               </div>
@@ -1023,8 +1024,12 @@ export default function ScoreCalculator() {
       </div>
 
       {/* FOOTER */}
-      <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
-        <span>ScoreHigh Diagnostic • Multi-Device Adaptive Experience</span>
+      <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-3">
+        <div className="flex items-center gap-2">
+          <img src="/logo-icon.svg" alt="ScoreHigh" className="w-5 h-5 object-contain" />
+          <span className="font-bold text-slate-700">ScoreHigh</span>
+          <span>• Standardized Testing Diagnostic</span>
+        </div>
         <span>College Board Adaptive IRT & Official IELTS 4-Skill Standard</span>
       </footer>
     </div>

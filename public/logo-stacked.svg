@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 550" width="100%" height="100%">
+  <defs>
+    <style>
+      .primary-purple { fill: #5522C2; }
+      .light-purple { fill: #9D84F3; }
+      .white-stroke { stroke: #FFFFFF; stroke-width: 14; stroke-linejoin: round; stroke-linecap: round; }
+      .logo-text-score { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Geist', 'Segoe UI', Arial, sans-serif; font-size: 72px; font-weight: 900; fill: #5522C2; letter-spacing: -2px; }
+      .logo-text-high { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Geist', 'Segoe UI', Arial, sans-serif; font-size: 72px; font-weight: 800; fill: #9D84F3; letter-spacing: -1.5px; }
+    </style>
+  </defs>
+
+  <!-- ICON SECTION -->
+  <g id="logo-icon-stacked" transform="translate(0, -20)">
+    <!-- 1. GRADUATION CAP / MORTARBOARD -->
+    <path 
+      class="primary-purple" 
+      d="M 252 120 L 372 185 L 222 236 L 130 185 Z" 
+    />
+
+    <!-- Tassel -->
+    <rect x="352" y="190" width="7" height="52" rx="3.5" class="primary-purple" />
+    <rect x="345" y="246" width="21" height="38" rx="6" class="primary-purple" />
+
+    <!-- 2. THREE GROWTH BARS -->
+    <path 
+      class="light-purple" 
+      d="M 197 318 Q 197 314 200 311 L 226 288 Q 228 286 228 290 L 228 374 Q 228 376 225 376 L 209 376 C 200 376 197 368 197 358 Z" 
+    />
+    <path 
+      class="light-purple" 
+      d="M 239 278 Q 239 275 242 272 L 268 250 Q 270 248 270 252 L 270 374 Q 270 376 267 376 L 242 376 Q 239 376 239 373 Z" 
+    />
+    <path 
+      class="light-purple" 
+      d="M 281 240 Q 281 237 284 234 L 310 212 Q 312 210 312 214 L 312 356 C 312 368 308 376 296 376 L 284 376 Q 281 376 281 373 Z" 
+    />
+
+    <!-- 3. RISING CURVED ARROW WITH WHITE CUTOUT MASK -->
+    <path 
+      class="white-stroke" 
+      fill="#FFFFFF"
+      d="M 166 376 C 164 322 195 272 268 214 L 325 186 L 325 248 L 305 233 C 240 294 204 338 181 376 Z" 
+    />
+    <path 
+      class="primary-purple" 
+      d="M 167 375 C 165 323 196 273 268 215 L 324 187 L 324 247 L 305 233 C 240 293 204 337 182 375 Z" 
+    />
+  </g>
+
+  <!-- LOGOTYPE TEXT: ScoreHigh -->
+  <g id="logo-text" transform="translate(250, 440)" text-anchor="middle">
+    <text y="0">
+      <tspan class="logo-text-score">Score</tspan><tspan class="logo-text-high">High</tspan>
+    </text>
+  </g>
+</svg>
